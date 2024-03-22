@@ -1,6 +1,6 @@
+import 'package:fl_chart/fl_chart.dart';
 import 'package:fl_chart_app/presentation/resources/app_resources.dart';
 import 'package:fl_chart_app/util/extensions/color_extensions.dart';
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
@@ -63,7 +63,7 @@ class LineChartSample6 extends StatelessWidget {
   late double minSpotY;
   late double maxSpotY;
 
-  Widget leftTitleWidgets(double value, TitleMeta meta) {
+  Widget leftTitleWidgets(int index, double value, TitleMeta meta) {
     final style = TextStyle(
       color: line1Color1,
       fontWeight: FontWeight.bold,
@@ -86,7 +86,7 @@ class LineChartSample6 extends StatelessWidget {
     );
   }
 
-  Widget rightTitleWidgets(double value, TitleMeta meta) {
+  Widget rightTitleWidgets(int index, double value, TitleMeta meta) {
     final style = TextStyle(
       color: line2Color2,
       fontWeight: FontWeight.bold,
@@ -101,7 +101,7 @@ class LineChartSample6 extends StatelessWidget {
     return Text(intValue.toString(), style: style, textAlign: TextAlign.right);
   }
 
-  Widget topTitleWidgets(double value, TitleMeta meta) {
+  Widget topTitleWidgets(int index, double value, TitleMeta meta) {
     if (value % 1 != 0) {
       return Container();
     }

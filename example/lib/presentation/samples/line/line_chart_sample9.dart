@@ -1,7 +1,7 @@
 import 'dart:math';
 
-import 'package:fl_chart_app/presentation/resources/app_resources.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:fl_chart_app/presentation/resources/app_resources.dart';
 import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
@@ -97,7 +97,7 @@ class LineChartSample9 extends StatelessWidget {
                   leftTitles: AxisTitles(
                     sideTitles: SideTitles(
                       showTitles: true,
-                      getTitlesWidget: (value, meta) =>
+                      getTitlesWidget: (index, value, meta) =>
                           leftTitleWidgets(value, meta, constraints.maxWidth),
                       reservedSize: 56,
                     ),
@@ -109,7 +109,7 @@ class LineChartSample9 extends StatelessWidget {
                   bottomTitles: AxisTitles(
                     sideTitles: SideTitles(
                       showTitles: true,
-                      getTitlesWidget: (value, meta) =>
+                      getTitlesWidget: (index, value, meta) =>
                           bottomTitleWidgets(value, meta, constraints.maxWidth),
                       reservedSize: 36,
                       interval: 1,

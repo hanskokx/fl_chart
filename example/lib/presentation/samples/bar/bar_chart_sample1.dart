@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:fl_chart/fl_chart.dart';
 import 'package:fl_chart_app/presentation/resources/app_resources.dart';
 import 'package:fl_chart_app/util/extensions/color_extensions.dart';
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 class BarChartSample1 extends StatefulWidget {
@@ -253,7 +253,7 @@ class BarChartSample1State extends State<BarChartSample1> {
     );
   }
 
-  Widget getTitles(double value, TitleMeta meta) {
+  Widget getTitles(int index, double value, TitleMeta meta) {
     const style = TextStyle(
       color: Colors.white,
       fontWeight: FontWeight.bold,

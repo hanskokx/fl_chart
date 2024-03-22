@@ -1,5 +1,5 @@
-import 'package:fl_chart_app/presentation/resources/app_resources.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:fl_chart_app/presentation/resources/app_resources.dart';
 import 'package:flutter/material.dart';
 
 class LineChartSample5 extends StatefulWidget {
@@ -211,7 +211,7 @@ class _LineChartSample5State extends State<LineChartSample5> {
                   sideTitles: SideTitles(
                     showTitles: true,
                     interval: 1,
-                    getTitlesWidget: (value, meta) {
+                    getTitlesWidget: (index, value, meta) {
                       return bottomTitleWidgets(
                         value,
                         meta,

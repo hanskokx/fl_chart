@@ -125,12 +125,16 @@ class TitleMeta {
 }
 
 /// It gives you the axis value and gets a String value based on it.
-typedef GetTitleWidgetFunction = Widget Function(double value, TitleMeta meta);
+typedef GetTitleWidgetFunction = Widget Function(
+  int index,
+  double value,
+  TitleMeta meta,
+);
 
 /// The default [SideTitles.getTitlesWidget] function.
 ///
 /// formats the axis number to a shorter string using [formatNumber].
-Widget defaultGetTitle(double value, TitleMeta meta) {
+Widget defaultGetTitle(int index, double value, TitleMeta meta) {
   return SideTitleWidget(
     axisSide: meta.axisSide,
     child: Text(

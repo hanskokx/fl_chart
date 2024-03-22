@@ -1,7 +1,7 @@
 import 'dart:math' as math;
 
-import 'package:fl_chart_app/presentation/resources/app_resources.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:fl_chart_app/presentation/resources/app_resources.dart';
 import 'package:flutter/material.dart';
 
 class BarChartSample7 extends StatefulWidget {
@@ -72,7 +72,7 @@ class _BarChartSample7State extends State<BarChartSample7> {
                 sideTitles: SideTitles(
                   showTitles: true,
                   reservedSize: 30,
-                  getTitlesWidget: (value, meta) {
+                  getTitlesWidget: (index, value, meta) {
                     return Text(
                       value.toInt().toString(),
                       textAlign: TextAlign.left,
@@ -84,7 +84,7 @@ class _BarChartSample7State extends State<BarChartSample7> {
                 sideTitles: SideTitles(
                   showTitles: true,
                   reservedSize: 36,
-                  getTitlesWidget: (value, meta) {
+                  getTitlesWidget: (index, value, meta) {
                     final index = value.toInt();
                     return SideTitleWidget(
                       axisSide: meta.axisSide,

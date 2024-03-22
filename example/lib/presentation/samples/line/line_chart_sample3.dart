@@ -1,5 +1,5 @@
-import 'package:fl_chart_app/presentation/resources/app_resources.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:fl_chart_app/presentation/resources/app_resources.dart';
 import 'package:flutter/material.dart';
 
 class LineChartSample3 extends StatefulWidget {
@@ -65,7 +65,7 @@ class _LineChartSample3State extends State<LineChartSample3> {
     super.initState();
   }
 
-  Widget leftTitleWidgets(double value, TitleMeta meta) {
+  Widget leftTitleWidgets(int index, double value, TitleMeta meta) {
     if (value % 1 != 0) {
       return Container();
     }
@@ -101,7 +101,7 @@ class _LineChartSample3State extends State<LineChartSample3> {
     );
   }
 
-  Widget bottomTitleWidgets(double value, TitleMeta meta) {
+  Widget bottomTitleWidgets(int index, double value, TitleMeta meta) {
     final isTouched = value == touchedValue;
     final style = TextStyle(
       color: isTouched ? widget.bottomTouchedTextColor : widget.bottomTextColor,

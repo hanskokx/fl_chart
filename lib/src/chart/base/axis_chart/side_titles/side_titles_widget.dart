@@ -154,6 +154,7 @@ class SideTitlesWidget extends StatelessWidget {
         return AxisSideTitleWidgetHolder(
           metaData,
           sideTitles.getTitlesWidget(
+            axisPositions.indexOf(metaData),
             metaData.axisValue,
             TitleMeta(
               min: axisMin,

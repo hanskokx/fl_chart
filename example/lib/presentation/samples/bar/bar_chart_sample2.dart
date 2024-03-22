@@ -1,6 +1,6 @@
+import 'package:fl_chart/fl_chart.dart';
 import 'package:fl_chart_app/presentation/resources/app_resources.dart';
 import 'package:fl_chart_app/util/extensions/color_extensions.dart';
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 class BarChartSample2 extends StatefulWidget {
@@ -171,7 +171,7 @@ class BarChartSample2State extends State<BarChartSample2> {
     );
   }
 
-  Widget leftTitles(double value, TitleMeta meta) {
+  Widget leftTitles(int index, double value, TitleMeta meta) {
     const style = TextStyle(
       color: Color(0xff7589a2),
       fontWeight: FontWeight.bold,
@@ -194,7 +194,7 @@ class BarChartSample2State extends State<BarChartSample2> {
     );
   }
 
-  Widget bottomTitles(double value, TitleMeta meta) {
+  Widget bottomTitles(int index, double value, TitleMeta meta) {
     final titles = <String>['Mn', 'Te', 'Wd', 'Tu', 'Fr', 'St', 'Su'];
 
     final Widget text = Text(

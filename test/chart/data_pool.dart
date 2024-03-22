@@ -571,7 +571,8 @@ final FlSpot flSpot1Clone = flSpot1.copyWith();
 const FlSpot flSpot2 = FlSpot(4, 2);
 final FlSpot flSpot2Clone = flSpot2.copyWith();
 
-Widget getTitles(double value, TitleMeta meta) => const Text('sallam');
+Widget getTitles(int index, double value, TitleMeta meta) =>
+    const Text('sallam');
 
 TextStyle getTextStyles(BuildContext context, double value) =>
     const TextStyle(color: Colors.green);

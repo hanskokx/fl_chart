@@ -1,5 +1,5 @@
-import 'package:fl_chart_app/presentation/resources/app_resources.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:fl_chart_app/presentation/resources/app_resources.dart';
 import 'package:flutter/material.dart';
 
 class LineChartSample7 extends StatelessWidget {
@@ -17,7 +17,7 @@ class LineChartSample7 extends StatelessWidget {
   final Color line2Color;
   final Color betweenColor;
 
-  Widget bottomTitleWidgets(double value, TitleMeta meta) {
+  Widget bottomTitleWidgets(int index, double value, TitleMeta meta) {
     const style = TextStyle(
       fontSize: 10,
       fontWeight: FontWeight.bold,
@@ -71,7 +71,7 @@ class LineChartSample7 extends StatelessWidget {
     );
   }
 
-  Widget leftTitleWidgets(double value, TitleMeta meta) {
+  Widget leftTitleWidgets(int index, double value, TitleMeta meta) {
     const style = TextStyle(fontSize: 10);
 
     return SideTitleWidget(
