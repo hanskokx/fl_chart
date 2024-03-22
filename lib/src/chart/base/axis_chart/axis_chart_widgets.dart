@@ -17,6 +17,7 @@ class SideTitleWidget extends StatefulWidget {
     super.key,
     required this.child,
     required this.axisSide,
+    this.index = 0,
     this.space = 8.0,
     this.angle = 0.0,
     this.fitInside = const SideTitleFitInsideData(
@@ -31,6 +32,7 @@ class SideTitleWidget extends StatefulWidget {
   final double space;
   final Widget child;
   final double angle;
+  final int index;
 
   /// Define fitInside options with [SideTitleFitInsideData]
   ///
