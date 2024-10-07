@@ -166,6 +166,8 @@ class SideTitles with EquatableMixin {
     this.getTitlesWidget = defaultGetTitle,
     this.reservedSize = 22,
     this.interval,
+    this.minIncluded = true,
+    this.maxIncluded = true,
   }) : assert(interval != 0, "SideTitles.interval couldn't be zero");
 
   /// Determines showing or hiding this side titles
@@ -183,6 +185,14 @@ class SideTitles with EquatableMixin {
   /// we try to find a suitable value to set as [interval] under the hood.
   final double? interval;
 
+  /// If true (default), a title for the minimum data value is included
+  /// independent of the sampling interval
+  final bool minIncluded;
+
+  /// If true (default), a title for the maximum data value is included
+  /// independent of the sampling interval
+  final bool maxIncluded;
+
   /// Lerps a [SideTitles] based on [t] value, check [Tween.lerp].
   static SideTitles lerp(SideTitles a, SideTitles b, double t) {
     return SideTitles(
@@ -190,6 +200,8 @@ class SideTitles with EquatableMixin {
       getTitlesWidget: b.getTitlesWidget,
       reservedSize: lerpDouble(a.reservedSize, b.reservedSize, t)!,
       interval: lerpDouble(a.interval, b.interval, t),
+      minIncluded: b.minIncluded,
+      maxIncluded: b.maxIncluded,
     );
   }
 
@@ -200,12 +212,16 @@ class SideTitles with EquatableMixin {
     GetTitleWidgetFunction? getTitlesWidget,
     double? reservedSize,
     double? interval,
+    bool? minIncluded,
+    bool? maxIncluded,
   }) {
     return SideTitles(
       showTitles: showTitles ?? this.showTitles,
       getTitlesWidget: getTitlesWidget ?? this.getTitlesWidget,
       reservedSize: reservedSize ?? this.reservedSize,
       interval: interval ?? this.interval,
+      minIncluded: minIncluded ?? this.minIncluded,
+      maxIncluded: maxIncluded ?? this.maxIncluded,
     );
   }
 
@@ -216,6 +232,8 @@ class SideTitles with EquatableMixin {
         getTitlesWidget,
         reservedSize,
         interval,
+        minIncluded,
+        maxIncluded,
       ];
 }
 
@@ -444,7 +462,8 @@ class FlTitlesData with EquatableMixin {
 }
 
 /// Represents a conceptual position in cartesian (axis based) space.
-class FlSpot with EquatableMixin {
+@immutable
+class FlSpot {
   /// [x] determines cartesian (axis based) horizontally position
   /// 0 means most left point of the chart
   ///
@@ -482,13 +501,6 @@ class FlSpot with EquatableMixin {
   /// Determines if [x] and [y] is not null.
   bool isNotNull() => !isNull();
 
-  /// Used for equality check, see [EquatableMixin].
-  @override
-  List<Object?> get props => [
-        x,
-        y,
-      ];
-
   /// Lerps a [FlSpot] based on [t] value, check [Tween.lerp].
   static FlSpot lerp(FlSpot a, FlSpot b, double t) {
     if (a == FlSpot.nullSpot) {
@@ -504,6 +516,25 @@ class FlSpot with EquatableMixin {
       lerpDouble(a.y, b.y, t)!,
     );
   }
+
+  /// Two [FlSpot] are equal if their [x] and [y] are equal.
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! FlSpot) {
+      return false;
+    }
+
+    if (x.isNaN && y.isNaN && other.x.isNaN && other.y.isNaN) {
+      return true;
+    }
+
+    return other.x == x && other.y == y;
+  }
+
+  /// Override hashCode
+  @override
+  int get hashCode => x.hashCode ^ y.hashCode;
 }
 
 /// Responsible to hold grid data,
@@ -1125,19 +1156,16 @@ class HorizontalLineLabel extends FlLineLabel with EquatableMixin {
   /// size, ... of the text.
   /// Drawing text will retrieve through [labelResolver],
   /// you can override it with your custom data.
-  /// /// [show] determines showing label or not.
+  /// [show] determines showing label or not.
+  /// [direction] determines if the direction of the text should be horizontal or vertical.
   HorizontalLineLabel({
-    EdgeInsets? padding,
+    super.padding = const EdgeInsets.all(6),
     super.style,
-    Alignment? alignment,
+    super.alignment = Alignment.topLeft,
     super.show = false,
-    String Function(HorizontalLine)? labelResolver,
-  })  : labelResolver =
-            labelResolver ?? HorizontalLineLabel.defaultLineLabelResolver,
-        super(
-          padding: padding ?? const EdgeInsets.all(6),
-          alignment: alignment ?? Alignment.topLeft,
-        );
+    super.direction = LabelDirection.horizontal,
+    this.labelResolver = HorizontalLineLabel.defaultLineLabelResolver,
+  });
 
   /// Resolves a label for showing.
   final String Function(HorizontalLine) labelResolver;
@@ -1154,11 +1182,12 @@ class HorizontalLineLabel extends FlLineLabel with EquatableMixin {
   ) {
     return HorizontalLineLabel(
       padding:
-          EdgeInsets.lerp(a.padding as EdgeInsets, b.padding as EdgeInsets, t),
+          EdgeInsets.lerp(a.padding as EdgeInsets, b.padding as EdgeInsets, t)!,
       style: TextStyle.lerp(a.style, b.style, t),
-      alignment: Alignment.lerp(a.alignment, b.alignment, t),
+      alignment: Alignment.lerp(a.alignment, b.alignment, t)!,
       labelResolver: b.labelResolver,
       show: b.show,
+      direction: b.direction,
     );
   }
 
@@ -1170,6 +1199,7 @@ class HorizontalLineLabel extends FlLineLabel with EquatableMixin {
         padding,
         style,
         alignment,
+        direction,
       ];
 }
 
@@ -1181,25 +1211,19 @@ class VerticalLineLabel extends FlLineLabel with EquatableMixin {
   /// Drawing text will retrieve through [labelResolver],
   /// you can override it with your custom data.
   /// [show] determines showing label or not.
+  /// [direction] determines if the direction of the text should be horizontal or vertical.
   VerticalLineLabel({
-    EdgeInsets? padding,
-    TextStyle? style,
-    Alignment? alignment,
-    bool? show,
-    String Function(VerticalLine)? labelResolver,
-  })  : labelResolver =
-            labelResolver ?? VerticalLineLabel.defaultLineLabelResolver,
-        super(
-          show: show ?? false,
-          padding: padding ?? const EdgeInsets.all(6),
-          style: style ??
-              const TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-                fontSize: 14,
-              ),
-          alignment: alignment ?? Alignment.bottomRight,
-        );
+    super.padding = const EdgeInsets.all(6),
+    super.style = const TextStyle(
+      color: Colors.black,
+      fontWeight: FontWeight.bold,
+      fontSize: 14,
+    ),
+    super.alignment = Alignment.bottomRight,
+    super.show = false,
+    super.direction = LabelDirection.horizontal,
+    this.labelResolver = VerticalLineLabel.defaultLineLabelResolver,
+  });
 
   /// Resolves a label for showing.
   final String Function(VerticalLine) labelResolver;
@@ -1216,11 +1240,12 @@ class VerticalLineLabel extends FlLineLabel with EquatableMixin {
   ) {
     return VerticalLineLabel(
       padding:
-          EdgeInsets.lerp(a.padding as EdgeInsets, b.padding as EdgeInsets, t),
+          EdgeInsets.lerp(a.padding as EdgeInsets, b.padding as EdgeInsets, t)!,
       style: TextStyle.lerp(a.style, b.style, t),
-      alignment: Alignment.lerp(a.alignment, b.alignment, t),
+      alignment: Alignment.lerp(a.alignment, b.alignment, t)!,
       labelResolver: b.labelResolver,
       show: b.show,
+      direction: b.direction,
     );
   }
 
@@ -1232,13 +1257,14 @@ class VerticalLineLabel extends FlLineLabel with EquatableMixin {
         padding,
         style,
         alignment,
+        direction,
       ];
 }
 
 /// Holds data for showing a vector image inside the chart.
 ///
 /// for example:
-/// ```
+/// ```dart
 /// Future<SizedPicture> loadSvg() async {
 ///    const String rawSvg = 'your svg string';
 ///    final DrawableRoot svgRoot = await svg.fromSvgString(rawSvg, rawSvg);
@@ -1250,7 +1276,7 @@ class SizedPicture with EquatableMixin {
   /// [picture] is the showing image,
   /// it can retrieve from a svg icon,
   /// for example:
-  /// ```
+  /// ```dart
   ///    const String rawSvg = 'your svg string';
   ///    final DrawableRoot svgRoot = await svg.fromSvgString(rawSvg, rawSvg);
   ///    final picture = svgRoot.toPicture()
